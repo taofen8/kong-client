@@ -17,9 +17,6 @@ import java.io.IOException;
 
 public interface IPluginAPI {
 
-  /**
-   * Plugin API Started at <a>https://docs.konghq.com/0.14.x/admin-api/#add-plugin</a>
-   */
   PluginResp addPlugin(PluginReq req) throws IOException;
 
   PluginResp retrievePlugin(String id) throws IOException;

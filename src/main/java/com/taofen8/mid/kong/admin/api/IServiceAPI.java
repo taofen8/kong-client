@@ -13,11 +13,7 @@ import com.taofen8.mid.kong.admin.response.ServiceResp;
 import java.io.IOException;
 
 public interface IServiceAPI {
-
-  /**
-   * Service API Started at <a>https://docs.konghq.com/0.14.x/admin-api/#service-object<a/>
-   */
-
+  
   ServiceResp addService(ServiceReq req) throws IOException;
 
   ServiceResp retrieveService(String nameOrId) throws IOException;

@@ -14,9 +14,7 @@ import java.io.IOException;
 
 public interface IRouteAPI {
 
-  /**
-   * Route API Started at <a>https://docs.konghq.com/0.14.x/admin-api/#add-route</a>
-   */
+
   RouteResp addRoute(RouteReq req) throws IOException;
 
   RouteResp retrieveRoute(String id) throws IOException;

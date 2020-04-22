@@ -15,9 +15,7 @@ import java.io.IOException;
 
 public interface IUpstreamAPI {
 
-  /**
-   * SNI API Start at <a>https://docs.konghq.com/0.14.x/admin-api/#upstream-objects</a>
-   */
+
   UpstreamResp addUpstream(UpstreamReq req) throws IOException;
 
   UpstreamResp retrieveUpstream(String nameOrId) throws IOException;

@@ -14,9 +14,6 @@ import java.io.IOException;
 
 public interface IConsumerAPI {
 
-  /**
-   * Consumer API Start at <a>https://docs.konghq.com/0.14.x/admin-api/#create-consumer</a>
-   */
   ConsumerResp createConsumer(ConsumerReq req) throws IOException;
 
   ConsumerResp retrieveConsumer(String usernameOrId) throws IOException;

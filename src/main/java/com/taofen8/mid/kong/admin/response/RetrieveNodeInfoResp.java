@@ -13,9 +13,8 @@ import com.taofen8.mid.kong.util.JsonUtil;
  * Retrieve Node Response Body
  *
  * @author sheny taofen8.com
- * @warning Have not filled params plugins and configuration
+ * Have not filled params plugins and configuration
  */
-
 public class RetrieveNodeInfoResp extends BaseResp {
 
   private String hostname;

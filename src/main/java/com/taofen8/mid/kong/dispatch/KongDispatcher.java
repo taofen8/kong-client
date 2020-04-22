@@ -17,7 +17,7 @@ import org.springframework.context.ApplicationContext;
 public interface KongDispatcher {
 
   /**
-   * 初始化
+   *
    */
   void onStartUp(ApplicationContext context, Config config) throws KongConfigException;
 

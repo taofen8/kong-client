@@ -15,10 +15,6 @@ import java.io.IOException;
 
 public interface ITargetAPI {
 
-  /**
-   * SNI API Start at <a>https://docs.konghq.com/0.14.x/admin-api/#target-object</a>
-   */
-
   TargetResp addTarget(String id, TargetReq req) throws IOException;
 
   TargetPageResp listTargets(String nameOrId, TargetQuery query) throws IOException;

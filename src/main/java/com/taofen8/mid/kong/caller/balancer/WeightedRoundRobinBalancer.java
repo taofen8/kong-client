@@ -6,7 +6,6 @@
 
 package com.taofen8.mid.kong.caller.balancer;
 
-import com.taofen8.mid.kong.caller.exception.CallerException;
 import com.taofen8.mid.kong.caller.exception.LoadBalancerException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +40,14 @@ public class WeightedRoundRobinBalancer implements LoadBalancer {
         picked = this.hostList.get(i);
       }
     }
-
     picked.currentWeight -= totalWeight;
     return picked.toString();
   }
 
   /**
    * sample config string 192.168.0.1:8000 w:200,192.168.0.2:8000 w:100
-   *
    * @param balancerNodesConfig
-   * @throws CallerException
+   * @throws LoadBalancerException
    */
   @Override
   public void loadConfig(String balancerNodesConfig) throws LoadBalancerException {
