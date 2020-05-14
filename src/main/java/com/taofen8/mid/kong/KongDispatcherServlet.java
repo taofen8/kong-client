@@ -47,7 +47,7 @@ public class KongDispatcherServlet extends DispatcherServlet {
     ConfigLoader configLoader = BeanFactory
         .getBeanForTypeIncludingAncestors(context, ConfigLoader.class);
     if (configLoader == null) {
-      throw new IllegalArgumentException("kong ServerConfigLoader bean has been not sepecified ");
+      throw new IllegalArgumentException("kong ConfigLoader bean has been not sepecified ");
     }
 
     Config serverConfig = configLoader.buildConfig();
@@ -62,7 +62,6 @@ public class KongDispatcherServlet extends DispatcherServlet {
     dispatchers.add(new BuiltinServiceDispatcher());
 
     //lookup all dispatchers for startup, use default  dispatcher if no none specified
-
     String[] dispatcherNames = BeanFactoryUtils
         .beanNamesForTypeIncludingAncestors(context, KongDispatcher.class);
     if (dispatcherNames != null && dispatcherNames.length > 0) {

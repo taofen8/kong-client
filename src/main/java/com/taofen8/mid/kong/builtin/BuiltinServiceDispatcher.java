@@ -6,11 +6,11 @@
 
 package com.taofen8.mid.kong.builtin;
 
+import com.taofen8.mid.kong.builtin.meta.VersionInfo;
+import com.taofen8.mid.kong.config.Config;
 import com.taofen8.mid.kong.dispatch.AbstractKongDispatcher;
 import com.taofen8.mid.kong.dispatch.exception.KongConfigException;
 import com.taofen8.mid.kong.register.ServiceRegistration;
-import com.taofen8.mid.kong.builtin.meta.VersionInfo;
-import com.taofen8.mid.kong.config.Config;
 import com.taofen8.mid.kong.register.struct.Service;
 import com.taofen8.mid.kong.util.JsonUtil;
 import javax.servlet.http.HttpServletRequest;
@@ -33,9 +33,14 @@ public class BuiltinServiceDispatcher extends AbstractKongDispatcher {
     BuiltinServiceEntity serviceLocal = (BuiltinServiceEntity) service;
 
     int status = 200;
+
     try {
       Object invResponse = serviceLocal.invocation().invoke(request.getParameterMap());
-      response.getOutputStream().write(JsonUtil.toJSONString(invResponse).getBytes());
+      if (serviceLocal.serviceMapping.isJSONContextType()) {
+        response.getOutputStream().write(JsonUtil.toJSONString(invResponse).getBytes());
+      } else {
+        response.getOutputStream().write(invResponse.toString().getBytes());
+      }
     } catch (Exception e) {
       status = 500;
     }

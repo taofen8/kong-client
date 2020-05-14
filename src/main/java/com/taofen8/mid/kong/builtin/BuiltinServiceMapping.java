@@ -17,24 +17,27 @@ import java.lang.annotation.Target;
 public @interface BuiltinServiceMapping {
 
   /**
-   * 服务请求路径
    *
-   * @return
+   * @return 服务请求路径
    */
   String path() default "";
 
   /**
-   * 请求支持的host
-   * @return
+   * @return  请求支持的host
    */
   String[] hosts() default {};
 
   /**
-   * 请求支持的方法协议
    *
-   * @return
+   * @return 请求支持的方法协议
    */
   RequestMethod[] methods() default {RequestMethod.GET, RequestMethod.POST};
 
+
+  /**
+   *
+   * @return 是否json格式的数据
+   */
+  boolean isJSONContextType() default  true;
 
 }

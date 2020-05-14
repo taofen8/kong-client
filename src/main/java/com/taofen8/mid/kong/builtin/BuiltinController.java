@@ -11,6 +11,10 @@ import com.taofen8.mid.kong.builtin.monitor.ServiceMonitor;
 import com.taofen8.mid.kong.builtin.responses.HiResponse;
 import com.taofen8.mid.kong.builtin.responses.StatusResponse;
 import com.taofen8.mid.kong.builtin.responses.VersionResponse;
+import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.exporter.common.TextFormat;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -40,6 +44,13 @@ public class BuiltinController {
     statusResponse.setAlive(betweenDateString(monitor.getStartAt(), System.currentTimeMillis()));
     statusResponse.setProcessRequests(monitor.getRequestCount().longValue());
     return statusResponse;
+  }
+
+  @BuiltinServiceMapping(path = "/__builtin/metrics", isJSONContextType = false)
+  public String metrics(Map<String, Object> queryMap) throws IOException {
+    StringWriter writer = new StringWriter();
+    TextFormat.write004(writer, CollectorRegistry.defaultRegistry.metricFamilySamples());
+    return writer.toString();
   }
 
   private String toDateString(long ms) {

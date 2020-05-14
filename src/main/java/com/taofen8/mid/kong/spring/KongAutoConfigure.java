@@ -6,7 +6,6 @@
 
 package com.taofen8.mid.kong.spring;
 
-import com.taofen8.mid.kong.builtin.BuiltinController;
 import com.taofen8.mid.kong.config.ConfigLoader.DefaultConfigLoader;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -21,9 +20,4 @@ public class KongAutoConfigure {
     return new DefaultConfigLoader();
   }
 
-
-  @Bean(name = "builtinService")
-  public BuiltinController getBuiltinService() {
-    return new BuiltinController();
-  }
 }

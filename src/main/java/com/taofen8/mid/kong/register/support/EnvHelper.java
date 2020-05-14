@@ -32,10 +32,10 @@ public class EnvHelper {
   private EnvHelper() {
   }
 
-  public static String getLocalIP() {
+  public static String getLocalIP(boolean autoResolve) {
     try {
       String ip = System.getenv("HOST_IP");
-      if (StringUtils.isEmpty(ip)) {
+      if (StringUtils.isEmpty(ip) && autoResolve) {
         List<String> ipList = getOrderIpList();
 
         if (ipList.size() > 0) {
@@ -132,11 +132,11 @@ public class EnvHelper {
     }
   }
 
-  public static int getTomcatPort() {
+  public static int getTomcatPort(boolean autoResolve) {
     try {
       String port = System.getenv("HOST_PORT");
 
-      if (StringUtils.isEmpty(port)) {
+      if (StringUtils.isEmpty(port) && autoResolve) {
         MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
         Set<ObjectName> objectNames = beanServer.queryNames(new ObjectName("*:type=Connector,*"),
             Query.match(Query.attr("protocol"), Query.value("HTTP/1.1")));

@@ -60,8 +60,6 @@ public abstract class AbstractKongMappingDispatcher<R, S> extends AbstractKongDi
 
   /**
    * 请求数据前置处理
-   *
-   * @return
    */
   protected List<RequestHandler<R>> createRequestHandlers() {
     return new ArrayList<RequestHandler<R>>(0);
@@ -69,23 +67,17 @@ public abstract class AbstractKongMappingDispatcher<R, S> extends AbstractKongDi
 
   /**
    * 请求返回后置处理
-   *
-   * @return
    */
   protected List<ResponseHandler<R, S>> createResponseHandlers() {
     return new ArrayList<ResponseHandler<R, S>>(0);
   }
 
-  /**
-   * @return
-   */
+
   protected List<RequestBodyIntercepter> createRequestBodyIntercepters() {
     return new ArrayList<RequestBodyIntercepter>(0);
   }
 
-  /**
-   * @return
-   */
+
   protected List<ResponseBodyIntercepter> createResonseBodyIntercepters() {
     return new ArrayList<ResponseBodyIntercepter>(0);
   }
@@ -117,7 +109,6 @@ public abstract class AbstractKongMappingDispatcher<R, S> extends AbstractKongDi
    *
    * @param request
    * @param context
-   * @return
    */
   protected KongRequest<R> transformRequest(HttpServletRequest request,
       RequestContext<R, S> context) throws Exception {

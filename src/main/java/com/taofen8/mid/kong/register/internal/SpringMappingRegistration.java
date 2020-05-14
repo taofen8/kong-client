@@ -6,6 +6,10 @@
 
 package com.taofen8.mid.kong.register.internal;
 
+import com.taofen8.mid.kong.config.Config;
+import com.taofen8.mid.kong.config.Config.ConfigEntry;
+import com.taofen8.mid.kong.config.ConfigProvider;
+import com.taofen8.mid.kong.config.internal.InternalConfig.InternalConfigEntry;
 import com.taofen8.mid.kong.register.AbstractServiceRegistration;
 import com.taofen8.mid.kong.register.struct.PathMapping;
 import com.taofen8.mid.kong.register.struct.RequestMethod;
@@ -13,9 +17,6 @@ import com.taofen8.mid.kong.register.struct.Route;
 import com.taofen8.mid.kong.register.struct.Service;
 import com.taofen8.mid.kong.register.struct.Target;
 import com.taofen8.mid.kong.register.struct.Upstream;
-import com.taofen8.mid.kong.register.support.EnvHelper;
-import com.taofen8.mid.kong.config.Config;
-import com.taofen8.mid.kong.config.Config.ConfigEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -60,7 +61,9 @@ public class SpringMappingRegistration extends AbstractServiceRegistration<Servi
                 .split(",");
 
     Target target = new Target.Builder().target(
-        new StringBuffer(EnvHelper.getLocalIP()).append(":").append(EnvHelper.getTomcatPort())
+        new StringBuffer(ConfigProvider.getInternalConfig().getConfig(InternalConfigEntry.IP))
+            .append(":")
+            .append(ConfigProvider.getInternalConfig().getConfig(InternalConfigEntry.PORT))
             .toString())
         .build();
 

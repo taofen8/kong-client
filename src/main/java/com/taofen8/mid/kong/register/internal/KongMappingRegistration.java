@@ -8,16 +8,17 @@ package com.taofen8.mid.kong.register.internal;
 
 
 import com.taofen8.mid.kong.annotation.KongServiceMapping;
+import com.taofen8.mid.kong.config.Config;
+import com.taofen8.mid.kong.config.Config.ConfigEntry;
+import com.taofen8.mid.kong.config.ConfigProvider;
+import com.taofen8.mid.kong.config.internal.InternalConfig.InternalConfigEntry;
 import com.taofen8.mid.kong.register.AbstractServiceRegistration;
 import com.taofen8.mid.kong.register.struct.Invocation.Builder;
+import com.taofen8.mid.kong.register.struct.MicroService;
 import com.taofen8.mid.kong.register.struct.Route;
 import com.taofen8.mid.kong.register.struct.Signature;
 import com.taofen8.mid.kong.register.struct.Target;
 import com.taofen8.mid.kong.register.struct.Upstream;
-import com.taofen8.mid.kong.register.support.EnvHelper;
-import com.taofen8.mid.kong.config.Config;
-import com.taofen8.mid.kong.config.Config.ConfigEntry;
-import com.taofen8.mid.kong.register.struct.MicroService;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,7 +50,9 @@ public class KongMappingRegistration extends AbstractServiceRegistration<MicroSe
       Map<String, MicroService> serviceMap) {
 
     Target target = new Target.Builder().target(
-        new StringBuffer(EnvHelper.getLocalIP()).append(":").append(EnvHelper.getTomcatPort())
+        new StringBuffer(ConfigProvider.getInternalConfig().getConfig(InternalConfigEntry.IP))
+            .append(":")
+            .append(ConfigProvider.getInternalConfig().getConfig(InternalConfigEntry.PORT))
             .toString())
         .build();
 

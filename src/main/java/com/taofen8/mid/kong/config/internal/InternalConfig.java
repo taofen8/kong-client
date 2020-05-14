@@ -25,7 +25,9 @@ public class InternalConfig {
   }
 
   public enum InternalConfigEntry {
-    COMSUMER_KEY("consumer_key");
+    COMSUMER_KEY("consumer_key"),
+    IP("ip"),
+    PORT("port");
     private String name;
 
     public String getName() {

@@ -6,12 +6,12 @@
 
 package com.taofen8.mid.kong.config;
 
+import com.taofen8.mid.kong.config.Config.ConfigEntry;
 import com.taofen8.mid.kong.config.internal.AuthKeyGetter;
 import com.taofen8.mid.kong.config.internal.AuthKeyGetter.AuthKeyGetterCallBack;
 import com.taofen8.mid.kong.config.internal.InternalConfig;
-import com.taofen8.mid.kong.executor.SingleTask;
-import com.taofen8.mid.kong.config.Config.ConfigEntry;
 import com.taofen8.mid.kong.executor.SingleExecutor;
+import com.taofen8.mid.kong.executor.SingleTask;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +52,8 @@ public interface ConfigLoader {
     @Value("${{kong.config.caller.keyauth.keyname:apikey}")
     private String keyauthKeyname;
 
+    @Value("${{kong.config.server.address.resolve}")
+    private String addressAutoResolve;
 
     private Config config;
 
@@ -67,9 +69,9 @@ public interface ConfigLoader {
       sConfig.configure(ConfigEntry.KONG_CALLER_BALANCER_NODES, balancerNodes);
       sConfig.configure(ConfigEntry.KONG_CALLER_KEYAUTH_ENABLE, keyauthEnable);
       sConfig.configure(ConfigEntry.KONG_CALLER_KEYAUTH_KEYNAME, keyauthKeyname);
+      sConfig.configure(ConfigEntry.KONG_SERVER_ADDRESS_AUTO_RESOLVE, addressAutoResolve);
 
       this.config = sConfig;
-
 
       InternalConfig internalConfig = ConfigProvider.getInternalConfig();
       if (ConfigResolver.isWitchOn(config.getConfig(ConfigEntry.KONG_CALLER_KEYAUTH_ENABLE))) {

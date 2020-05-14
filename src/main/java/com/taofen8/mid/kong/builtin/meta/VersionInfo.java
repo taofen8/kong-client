@@ -12,7 +12,7 @@ import java.util.Properties;
 public class VersionInfo {
 
   private static String version;
-  final static String PATH = "/META-INF/maven/com.tfg.mid/kong-client/pom.properties";
+  final static String PATH = "/META-INF/maven/com.taofen8.mid/kong-client/pom.properties";
 
   private VersionInfo() {
   }

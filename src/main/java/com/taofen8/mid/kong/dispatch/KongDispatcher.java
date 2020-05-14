@@ -18,6 +18,9 @@ public interface KongDispatcher {
 
   /**
    *
+   * @param context
+   * @param config
+   * @throws KongConfigException
    */
   void onStartUp(ApplicationContext context, Config config) throws KongConfigException;
 
@@ -26,7 +29,6 @@ public interface KongDispatcher {
    *
    * @param request
    * @param response
-   * @return
    */
   boolean kongDispatch(Service service, HttpServletRequest request, HttpServletResponse response);
 

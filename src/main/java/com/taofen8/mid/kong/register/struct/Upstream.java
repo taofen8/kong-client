@@ -128,7 +128,7 @@ public class Upstream {
     private List<String> tags;
     private String host_header;
     private Target target;
-    private String healthcheckConfigString = "{\"active\":{\"unhealthy\":{\"http_statuses\":[429,404,500,501,502,503,504,505],\"tcp_failures\":3,\"timeouts\":3,\"http_failures\":3,\"interval\":3},\"type\":\"http\",\"http_path\":\"/__builtin/hi\",\"timeout\":3,\"healthy\":{\"successes\":1,\"interval\":1,\"http_statuses\":[200,302]},\"https_verify_certificate\":false,\"concurrency\":10},\"passive\":{\"unhealthy\":{\"http_failures\":0,\"http_statuses\":[429,500,503],\"tcp_failures\":0,\"timeouts\":0},\"healthy\":{\"http_statuses\":[200,201,202,203,204,205,206,207,208,226,300,301,302,303,304,305,306,307,308],\"successes\":0},\"type\":\"http\"}}";
+    private String healthcheckConfigString;
     private Map healthcheckConfig;
 
 
