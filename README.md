@@ -1,3 +1,5 @@
+<p align="right">EN | <a href="README.zh.md">中文</a> </p>
+
 # Kong-client - A light weight java sdk  for fast integrating with kong 
 
 ![](https://img.shields.io/badge/license-Apache%202.0-blue)
@@ -11,9 +13,11 @@ API gateway
 
 # Features
 - Fast Integration with springMVC:Suitable for all spring web app and work with less config
+- Mutiple strategies for service proxy
 - Register services automatically
 - Service Call API：Generic API for firing request
-- Built-in Monitor：Exports many metrics ,like service call count 
+- Load balancer
+- Built-in Monitor: sdk version, server status and metrics etc.
 
 # Terminology
 ### Proxy strategy
@@ -33,8 +37,6 @@ API gateway
   This strategy is very suitable for existing springMVC projects which are wanted to be integrated to kong,and use spring's `RequestMapping` annotation on every service.
   The strategy will take advantage of all spring features,like intercepters,view resolvers,and complex request handlers etc. kong-client will only be  acted as a request proxy and do nothing invasive in request process.
 
-
-Note that, 
 
 
 # Usage
@@ -58,6 +60,8 @@ kong.config.server.proxy.strategy
 # healthcheck config, required                           
 kong.config.server.healthcheck.config
 
+# auto resolve ip from net interfaces ,default :on
+kong.config.server.address.resolve
 ```
 
 These config items would be specified if current app want to provide services to kong.
@@ -96,7 +100,7 @@ Note that, if the app is only be a consumer of services but not a provider when 
     <dependency>
       <groupId>com.taofen8.mid</groupId>
       <artifactId>kong-client</artifactId>
-      <version>0.2.0-RELEASE</version>
+      <version>0.2.1-RELEASE</version>
     </dependency>
     ```
   

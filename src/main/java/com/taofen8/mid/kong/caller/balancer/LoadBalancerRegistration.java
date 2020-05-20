@@ -110,7 +110,7 @@ public class LoadBalancerRegistration {
 
     @Override
     public void run() {
-      while (isStop()) {
+      while(!stop) {
         boolean isAlive = LoadBalancerRegistration.isAlive(server.toString());
         if (server.isAlive() != isAlive) {
           for (LoadBalancer balancer : balancers) {
