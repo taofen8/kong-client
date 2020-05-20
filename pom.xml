@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.taofen8.mid</groupId>
   <artifactId>kong-client</artifactId>
-  <version>0.1.0-RELEASE</version>
+  <version>0.2.0-RELEASE</version>
   <packaging>jar</packaging>
   <name>kong-client</name>
 

@@ -86,7 +86,7 @@ kong.config.caller.keyauth.keyname
     <dependency>
       <groupId>com.taofen8.mid</groupId>
       <artifactId>kong-client</artifactId>
-      <version>${version}</version>
+      <version>0.2.0-RELEASE</version>
     </dependency>
     ```
   

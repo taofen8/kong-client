@@ -14,55 +14,74 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-public class WeightedRoundRobinBalancer implements LoadBalancer {
+public class WeightedRoundRobinBalancer implements LoadBalancer<WeightedServer> {
 
-  Logger logger = LoggerFactory.getLogger(WeightedRoundRobinBalancer.class);
+  private Logger logger = LoggerFactory.getLogger(WeightedRoundRobinBalancer.class);
 
-  List<TargetHost> hostList = new ArrayList<TargetHost>();
+  private List<WeightedServer> serverList = new ArrayList<WeightedServer>();
   private String configString;
 
   @Override
   public String nextNodeUrl() throws LoadBalancerException {
-    if (this.hostList.size() == 0) {
+    List<WeightedServer> healthyServerList = getHealthyServerList();
+
+    int totalWeight = 0;
+    for (WeightedServer eachHost : healthyServerList) {
+      totalWeight += eachHost.getWeight();
+    }
+
+    WeightedServer picked = healthyServerList.get(0);
+    picked.setCurrentWeight(picked.getCurrentWeight() + picked.getWeight());
+
+    for (int i = 1; i < healthyServerList.size(); i++) {
+      WeightedServer server = healthyServerList.get(i);
+      server.setCurrentWeight(server.getCurrentWeight() + server.getWeight());
+      if (picked.getCurrentWeight() < server.getCurrentWeight()) {
+        picked = server;
+      }
+    }
+
+    picked.setCurrentWeight(picked.getCurrentWeight() - totalWeight);
+    return picked.toString();
+  }
+
+  private List<WeightedServer> getHealthyServerList() throws LoadBalancerException {
+    if (this.serverList.size() == 0) {
       throw new LoadBalancerException(this.getClass().getName() + "balancer is broken");
     }
 
-    int totalWeight = 0;
-    for (TargetHost eachHost : this.hostList) {
-      totalWeight += eachHost.getEffectiveWeight();
-    }
-
-    TargetHost picked = this.hostList.get(0);
-    picked.currentWeight += picked.getEffectiveWeight();
-    for (int i = 1; i < this.hostList.size(); ++i) {
-      this.hostList.get(i).currentWeight += this.hostList.get(i).getEffectiveWeight();
-      if (picked.currentWeight < this.hostList.get(i).currentWeight) {
-        picked = this.hostList.get(i);
+    List<WeightedServer> healthyServerList = new ArrayList<WeightedServer>();
+    for (WeightedServer server : serverList) {
+      if (server.isAlive()) {
+        healthyServerList.add(server);
       }
     }
-    picked.currentWeight -= totalWeight;
-    return picked.toString();
+    if (healthyServerList.size() == 0) {
+      throw new LoadBalancerException(this.getClass().getName() + "balancer is broken");
+    }
+    return healthyServerList;
   }
 
   /**
    * sample config string 192.168.0.1:8000 w:200,192.168.0.2:8000 w:100
+   *
    * @param balancerNodesConfig
    * @throws LoadBalancerException
    */
   @Override
   public void loadConfig(String balancerNodesConfig) throws LoadBalancerException {
-    if (CollectionUtils.isEmpty(this.hostList)) {
+    if (CollectionUtils.isEmpty(this.serverList)) {
       if (StringUtils.isEmpty(balancerNodesConfig)) {
         throw new LoadBalancerException(
             this.getClass().getName() + ",loadConfig fail,parameter balancerUrlsConfig is emtpy");
       }
-      this.hostList = this.resolveFromConfig(balancerNodesConfig);
+      this.serverList = this.resolveFromConfig(balancerNodesConfig);
       this.configString = balancerNodesConfig;
     } else {
       List rollbackHostList = null;
       if (null != balancerNodesConfig && !this.configString.equals(balancerNodesConfig)) {
         rollbackHostList = new ArrayList();
-        for (TargetHost each : this.hostList) {
+        for (WeightedServer each : this.serverList) {
           try {
             rollbackHostList.add(each.clone());
           } catch (CloneNotSupportedException e) {
@@ -70,9 +89,9 @@ public class WeightedRoundRobinBalancer implements LoadBalancer {
           }
         }
 
-        this.hostList = this.resolveFromConfig(balancerNodesConfig);
-        if (CollectionUtils.isEmpty(this.hostList)) {
-          this.hostList = rollbackHostList;
+        this.serverList = this.resolveFromConfig(balancerNodesConfig);
+        if (CollectionUtils.isEmpty(this.serverList)) {
+          this.serverList = rollbackHostList;
         } else {
           this.configString = balancerNodesConfig;
         }
@@ -80,11 +99,16 @@ public class WeightedRoundRobinBalancer implements LoadBalancer {
     }
   }
 
+  @Override
+  public List<WeightedServer> getServerList() {
+    return serverList;
+  }
+
   /**
    * format: case 1:192.168.0.1:8000 case 2:192.168.0.1:8000 w:100,192.168.0.2:8000 w:200
    */
-  private List<TargetHost> resolveFromConfig(String configString) {
-    List<TargetHost> list = new ArrayList<TargetHost>(8);
+  private List<WeightedServer> resolveFromConfig(String configString) {
+    List<WeightedServer> list = new ArrayList<WeightedServer>(8);
     String[] hosts = configString.split(",");
     for (String host : hosts) {
       String[] hostWithWeight = host.split(" ");
@@ -94,11 +118,7 @@ public class WeightedRoundRobinBalancer implements LoadBalancer {
         weight = hostWithWeight[1].split(":")[1];
       }
       list.add(
-          new TargetHost.Builder()
-              .ip(ipWithPort[0])
-              .port(ipWithPort[1])
-              .weight(Integer.valueOf(weight))
-              .build()
+          new WeightedServer(ipWithPort[0], Integer.valueOf(ipWithPort[1]), Integer.valueOf(weight))
       );
     }
     return list;

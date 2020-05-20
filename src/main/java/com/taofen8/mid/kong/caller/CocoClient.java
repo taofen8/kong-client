@@ -7,12 +7,13 @@
 package com.taofen8.mid.kong.caller;
 
 import com.taofen8.mid.kong.caller.balancer.LoadBalancer;
+import com.taofen8.mid.kong.caller.balancer.LoadBalancerRegistration;
+import com.taofen8.mid.kong.caller.balancer.WeightedRoundRobinBalancer;
 import com.taofen8.mid.kong.caller.exception.LoadBalancerException;
 import com.taofen8.mid.kong.codec.Codec;
+import com.taofen8.mid.kong.config.Config.ConfigEntry;
 import com.taofen8.mid.kong.config.ConfigProvider;
 import com.taofen8.mid.kong.config.internal.InternalConfig.InternalConfigEntry;
-import com.taofen8.mid.kong.caller.balancer.WeightedRoundRobinBalancer;
-import com.taofen8.mid.kong.config.Config.ConfigEntry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -80,6 +81,7 @@ public class CocoClient {
                 balancerNodesConfig));
           }
           balancer.loadConfig(balancerNodesConfig);
+          LoadBalancerRegistration.register(balancer);
           this.globalBalancerNodesConfig = balancerNodesConfig;
         }
       }
@@ -99,7 +101,7 @@ public class CocoClient {
     this.specifiedBalancerNodesConfig = builder.specifiedBalancerNodesConfig;
 
     String balancerNodesConfig = builder.specifiedBalancerNodesConfig;
-    if (StringUtils.isEmpty(specifiedBalancerNodesConfig)) {
+    if (StringUtils.isEmpty(balancerNodesConfig)) {
       balancerNodesConfig = ConfigProvider.getConfig()
           .getConfig(ConfigEntry.KONG_CALLER_BALANCER_NODES);
       globalBalancerNodesConfig = balancerNodesConfig;
@@ -112,6 +114,7 @@ public class CocoClient {
     if (!StringUtils.isEmpty(balancerNodesConfig)) {
       try {
         balancer.loadConfig(balancerNodesConfig);
+        LoadBalancerRegistration.register(balancer);
       } catch (LoadBalancerException e) {
         throw new IllegalArgumentException(e);
       }
@@ -125,8 +128,6 @@ public class CocoClient {
         TimeUnit.MILLISECONDS).readTimeout(builder.readTimeout,
         TimeUnit.MILLISECONDS).writeTimeout(builder.writeTimeout,
         TimeUnit.MILLISECONDS).build();
-
-
   }
 
   public static class Builder {
