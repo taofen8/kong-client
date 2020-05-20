@@ -1,3 +1,5 @@
+<p align="right">EN | <a href="README.zh.md">中文</a> </p>
+
 # Kong-client - A light weight java sdk  for fast integrating with kong 
 
 ![](https://img.shields.io/badge/license-Apache%202.0-blue)
@@ -34,8 +36,6 @@ API gateway
   The strategy will take advantage of all spring features,like intercepters,view resolvers,and complex request handlers etc. kong-client will only be  acted as a request proxy and do nothing invasive in request process.
 
 
-Note that, 
-
 
 # Usage
 ### Config
@@ -58,6 +58,8 @@ kong.config.server.proxy.strategy
 # healthcheck config, required                           
 kong.config.server.healthcheck.config
 
+# auto resolve ip from net interfaces ,default :on
+kong.config.server.address.resolve
 ```
 
 These config items would be specified if current app want to provide services to kong.
@@ -96,7 +98,7 @@ Note that, if the app is only be a consumer of services but not a provider when 
     <dependency>
       <groupId>com.taofen8.mid</groupId>
       <artifactId>kong-client</artifactId>
-      <version>0.2.0-RELEASE</version>
+      <version>0.2.1-RELEASE</version>
     </dependency>
     ```
   
