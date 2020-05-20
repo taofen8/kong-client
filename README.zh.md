@@ -64,6 +64,9 @@ kong.config.server.proxy.strategy
 # 健康检查配置，可选                           
 kong.config.server.healthcheck.config
 
+# 是否自动解析网卡ip，默认为on，upstream注册时首先会检查环境变量中是否指定了HOST_IP、HOST_PORT等参数，若未指定，则解析所有网卡，按照一定排序规则选择一个合适的ip用来注册，
+若此开关为off，则只从环境变量中加载，没有设置则抛出异常
+kong.config.server.address.resolve
 ```
 
 

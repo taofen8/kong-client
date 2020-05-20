@@ -58,6 +58,8 @@ kong.config.server.proxy.strategy
 # healthcheck config, required                           
 kong.config.server.healthcheck.config
 
+# auto resolve ip from net interfaces ,default :on
+kong.config.server.address.resolve
 ```
 
 These config items would be specified if current app want to provide services to kong.
