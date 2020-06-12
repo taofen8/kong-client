@@ -13,9 +13,11 @@ API gateway
 
 # Features
 - Fast Integration with springMVC:Suitable for all spring web app and work with less config
+- Mutiple strategies for service proxy
 - Register services automatically
 - Service Call API：Generic API for firing request
-- Built-in Monitor：Exports many metrics ,like service call count 
+- Load balancer
+- Built-in Monitor: sdk version, server status and metrics etc.
 
 # Terminology
 ### Proxy strategy
