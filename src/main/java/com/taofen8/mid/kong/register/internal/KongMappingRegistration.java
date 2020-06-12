@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 public class KongMappingRegistration extends AbstractServiceRegistration<MicroService> {
@@ -75,7 +76,8 @@ public class KongMappingRegistration extends AbstractServiceRegistration<MicroSe
         }
 
         if (bean != null) {
-          Method[] methods = bean.getClass().getDeclaredMethods();
+          Class<?> userClass = ClassUtils.getUserClass(bean);
+          Method[] methods = userClass.getDeclaredMethods();
           for (Method method : methods) {
             if (method.getParameterTypes().length != 1) {
               continue;
