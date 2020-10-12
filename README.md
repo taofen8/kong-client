@@ -100,7 +100,7 @@ Note that, if the app is only be a consumer of services but not a provider when 
     <dependency>
       <groupId>com.taofen8.mid</groupId>
       <artifactId>kong-client</artifactId>
-      <version>0.2.1-RELEASE</version>
+      <version>0.2.2-RELEASE</version>
     </dependency>
     ```
   

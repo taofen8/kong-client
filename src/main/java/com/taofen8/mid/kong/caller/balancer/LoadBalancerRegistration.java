@@ -149,9 +149,9 @@ public class LoadBalancerRegistration {
 
     int retry = 0;
     while (retry < 3) {
-
+      Response response = null;
       try {
-        Response response = httpClient.newCall(request).execute();
+        response = httpClient.newCall(request).execute();
         if (response.isSuccessful()) {
           return true;
         } else {
@@ -163,6 +163,10 @@ public class LoadBalancerRegistration {
       } catch (Exception e) {
         logger.error("pingurl error,{},{}", url, retry, e);
         return false;
+      }finally {
+        if(response != null && response.body() != null){
+          response.close();
+        }
       }
     }
     return false;
