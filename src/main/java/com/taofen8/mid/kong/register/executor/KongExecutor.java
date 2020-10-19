@@ -114,8 +114,8 @@ public class KongExecutor extends ThreadPoolExecutor {
                  * add target to upstream, the same ip and port will be added only once.
                  */
                 String upstreamId = ((UpstreamResp) resp).getId();
-
-                if (!admin.containsTarget(upstreamId,
+                // Do not automatic updating target the new weight when the weight was 0.
+                if (!admin.containsTargetIncludeWeight0(upstreamId,
                     service.upstream().target().target())) {
                   resp = admin.addTarget(upstreamId,
                       new TargetReq.Builder()
