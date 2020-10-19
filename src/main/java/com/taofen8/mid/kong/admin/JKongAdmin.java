@@ -542,6 +542,22 @@ public class JKongAdmin implements INodeAPI,
         UPSTREAM_PATH + (nameOrId == null ? "" : nameOrId) + "/targets/all/", TargetPageResp.class);
   }
 
+  public boolean containsTargetIncludeWeight0(String upstreamNameOrId, String target) throws IOException {
+    TargetPageResp pageResp = listAllTargets(upstreamNameOrId);
+
+    if (pageResp.getData().size() == 0) {
+      return false;
+    }
+
+    for (TargetResp resp : pageResp.getData()) {
+      if (resp.getTarget().equals(target)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   public boolean containsTarget(String upstreamNameOrId, String target) throws IOException {
     TargetPageResp pageResp = listTargets(upstreamNameOrId, null);
 
