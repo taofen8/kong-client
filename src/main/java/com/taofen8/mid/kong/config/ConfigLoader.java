@@ -49,10 +49,10 @@ public interface ConfigLoader {
     @Value("${kong.config.caller.keyauth.enable:}")
     private String keyauthEnable;
 
-    @Value("${{kong.config.caller.keyauth.keyname:apikey}")
+    @Value("${kong.config.caller.keyauth.keyname:apikey}")
     private String keyauthKeyname;
 
-    @Value("${{kong.config.server.address.resolve}")
+    @Value("${kong.config.server.address.resolve}")
     private String addressAutoResolve;
 
     private Config config;
